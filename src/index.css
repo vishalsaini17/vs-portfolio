@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Outfit", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+/* Base style resets and transitions for light/dark themes */
+html, body {
+  font-family: var(--font-sans);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* WYSIWYG Content Editable Styles and Placeholders */
+.custom-wysiwyg-content:empty:before {
+  content: attr(placeholder);
+  color: #94a3b8;
+  cursor: text;
+  font-style: italic;
+}
+.dark .custom-wysiwyg-content:empty:before {
+  color: #475569;
+}
+
+.custom-wysiwyg-content h1 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 0.375rem;
+}
+.dark .custom-wysiwyg-content h1 {
+  border-color: #1e293b;
+}
+
+.custom-wysiwyg-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.custom-wysiwyg-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.custom-wysiwyg-content blockquote {
+  border-left: 4px solid #f97316;
+  background-color: rgba(249, 115, 22, 0.05);
+  padding-left: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+  border-radius: 0 0.375rem 0.375rem 0;
+}
+
+.custom-wysiwyg-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.custom-wysiwyg-content li {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
