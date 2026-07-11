@@ -73,7 +73,7 @@ export interface HomeSectionCard {
   title: string;
   description: string;
   iconName: string;
-  colorTheme?: 'orange' | 'blue' | 'purple' | 'amber' | 'teal' | 'rose' | 'sky' | 'emerald';
+  colorTheme?: 'orange' | 'blue' | 'purple' | 'amber' | 'teal' | 'rose' | 'sky' | 'emerald' | 'indigo' | 'violet' | 'fuchsia' | 'pink' | 'cyan' | 'lime' | 'slate' | 'yellow' | 'red';
   width?: '25%' | '50%' | '75%' | '100%';
 }
 
@@ -91,7 +91,7 @@ export interface ResumeSectionCard {
   description?: string;
   period?: string;
   iconName?: string;
-  colorTheme?: 'orange' | 'blue' | 'purple' | 'amber' | 'teal' | 'rose' | 'sky' | 'emerald';
+  colorTheme?: 'orange' | 'blue' | 'purple' | 'amber' | 'teal' | 'rose' | 'sky' | 'emerald' | 'indigo' | 'violet' | 'fuchsia' | 'pink' | 'cyan' | 'lime' | 'slate' | 'yellow' | 'red';
   width?: '25%' | '50%' | '75%' | '100%';
 }
 

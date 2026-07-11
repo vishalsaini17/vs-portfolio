@@ -20,7 +20,25 @@ import {
   Shield,
   Award,
   Star,
-  Heart
+  Heart,
+  BookOpen,
+  Cpu,
+  Terminal,
+  Cloud,
+  Flame,
+  Lightbulb,
+  Wrench,
+  Trophy,
+  Target,
+  Compass,
+  Activity,
+  PenTool,
+  Sparkles,
+  Server,
+  Coffee,
+  Map,
+  CheckCircle2,
+  Folder
 } from 'lucide-react';
 import { useProfile } from '../profileContext';
 
@@ -67,6 +85,45 @@ export default function ResumeTab() {
         return <Star className={iconClass} />;
       case 'heart':
         return <Heart className={iconClass} />;
+      case 'bookopen':
+      case 'book-open':
+        return <BookOpen className={iconClass} />;
+      case 'cpu':
+        return <Cpu className={iconClass} />;
+      case 'terminal':
+        return <Terminal className={iconClass} />;
+      case 'cloud':
+        return <Cloud className={iconClass} />;
+      case 'flame':
+        return <Flame className={iconClass} />;
+      case 'lightbulb':
+        return <Lightbulb className={iconClass} />;
+      case 'wrench':
+        return <Wrench className={iconClass} />;
+      case 'trophy':
+        return <Trophy className={iconClass} />;
+      case 'target':
+        return <Target className={iconClass} />;
+      case 'compass':
+        return <Compass className={iconClass} />;
+      case 'activity':
+        return <Activity className={iconClass} />;
+      case 'pentool':
+      case 'pen-tool':
+        return <PenTool className={iconClass} />;
+      case 'sparkles':
+        return <Sparkles className={iconClass} />;
+      case 'server':
+        return <Server className={iconClass} />;
+      case 'coffee':
+        return <Coffee className={iconClass} />;
+      case 'map':
+        return <Map className={iconClass} />;
+      case 'checkcircle':
+      case 'check-circle':
+        return <CheckCircle2 className={iconClass} />;
+      case 'folder':
+        return <Folder className={iconClass} />;
       default:
         return null;
     }
@@ -145,6 +202,60 @@ export default function ResumeTab() {
       border: 'border-emerald-100/75 dark:border-emerald-900/20',
       iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
       iconColor: 'text-emerald-600 dark:text-emerald-400'
+    },
+    indigo: {
+      bg: 'bg-[#f0f2fe] dark:bg-indigo-950/10',
+      border: 'border-indigo-100/75 dark:border-indigo-900/20',
+      iconBg: 'bg-indigo-100 dark:bg-indigo-900/30',
+      iconColor: 'text-indigo-600 dark:text-indigo-400'
+    },
+    violet: {
+      bg: 'bg-[#f5f3ff] dark:bg-violet-950/10',
+      border: 'border-violet-100/75 dark:border-violet-900/20',
+      iconBg: 'bg-violet-100 dark:bg-violet-900/30',
+      iconColor: 'text-violet-600 dark:text-violet-400'
+    },
+    fuchsia: {
+      bg: 'bg-[#fdf4ff] dark:bg-fuchsia-950/10',
+      border: 'border-fuchsia-100/75 dark:border-fuchsia-900/20',
+      iconBg: 'bg-fuchsia-100 dark:bg-fuchsia-900/30',
+      iconColor: 'text-fuchsia-600 dark:text-fuchsia-400'
+    },
+    pink: {
+      bg: 'bg-[#fdf2f8] dark:bg-pink-950/10',
+      border: 'border-pink-100/75 dark:border-pink-900/20',
+      iconBg: 'bg-pink-100 dark:bg-pink-900/30',
+      iconColor: 'text-pink-600 dark:text-pink-400'
+    },
+    cyan: {
+      bg: 'bg-[#ecfeff] dark:bg-cyan-950/10',
+      border: 'border-cyan-100/75 dark:border-cyan-900/20',
+      iconBg: 'bg-cyan-100 dark:bg-cyan-900/30',
+      iconColor: 'text-cyan-600 dark:text-cyan-400'
+    },
+    lime: {
+      bg: 'bg-[#f7fee7] dark:bg-lime-950/10',
+      border: 'border-lime-100/75 dark:border-lime-900/20',
+      iconBg: 'bg-lime-100 dark:bg-lime-900/30',
+      iconColor: 'text-lime-600 dark:text-lime-400'
+    },
+    slate: {
+      bg: 'bg-[#f8fafc] dark:bg-slate-950/10',
+      border: 'border-slate-200/75 dark:border-slate-800/20',
+      iconBg: 'bg-slate-200 dark:bg-slate-800/30',
+      iconColor: 'text-slate-600 dark:text-slate-400'
+    },
+    yellow: {
+      bg: 'bg-[#fefce8] dark:bg-yellow-950/10',
+      border: 'border-yellow-100/75 dark:border-yellow-900/20',
+      iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
+      iconColor: 'text-yellow-600 dark:text-yellow-400'
+    },
+    red: {
+      bg: 'bg-[#fef2f2] dark:bg-red-950/10',
+      border: 'border-red-100/75 dark:border-red-900/20',
+      iconBg: 'bg-red-100 dark:bg-red-900/30',
+      iconColor: 'text-red-600 dark:text-red-400'
     }
   };
 
