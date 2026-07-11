@@ -9,7 +9,10 @@ import { motion, AnimatePresence } from 'motion/react';
 import { 
   LogIn, LogOut, Mail, Trash2, Calendar, FileText, Upload, CheckCircle2, 
   AlertTriangle, Shield, User, Plus, Image, ExternalLink, RefreshCw, Home, Phone, Layers,
-  ArrowUp, ArrowDown, Search, Download, BookOpen, Sparkles, Send, Tag, Save
+  ArrowUp, ArrowDown, Search, Download, BookOpen, Sparkles, Send, Tag, Save,
+  Code, Smartphone, Palette, Users, Zap, Layout, Monitor, Globe, Database, Award, Star, Heart,
+  Cpu, Terminal, Cloud, Flame, Lightbulb, Wrench, Trophy, Target, Compass, Activity, PenTool,
+  Server, Coffee, Map, Folder, GraduationCap, Briefcase
 } from 'lucide-react';
 import { 
   auth, db, GoogleAuthProvider, signInWithPopup, signOut, handleFirestoreError, OperationType 
@@ -54,6 +57,85 @@ const maskEmail = (email: string | null | undefined): string => {
   return `${first}${middle}${last}@${domain}`;
 };
 
+const AVAILABLE_ICONS = [
+  { id: 'none', label: 'No Icon / None', component: Code },
+  { id: 'code', label: 'Code Block', component: Code },
+  { id: 'smartphone', label: 'Smartphone', component: Smartphone },
+  { id: 'palette', label: 'Paint Palette', component: Palette },
+  { id: 'users', label: 'People Box', component: Users },
+  { id: 'layers', label: 'Layers Stack', component: Layers },
+  { id: 'zap', label: 'Zap Volt', component: Zap },
+  { id: 'layout', label: 'Page Layout', component: Layout },
+  { id: 'monitor', label: 'Desktop Monitor', component: Monitor },
+  { id: 'globe', label: 'Web Globe', component: Globe },
+  { id: 'database', label: 'Database Server', component: Database },
+  { id: 'shield', label: 'Secure Shield', component: Shield },
+  { id: 'award', label: 'Award Medal', component: Award },
+  { id: 'star', label: 'Rating Star', component: Star },
+  { id: 'heart', label: 'Health Heart', component: Heart },
+  { id: 'bookopen', label: 'Book & Writing', component: BookOpen },
+  { id: 'cpu', label: 'AI & CPU Processor', component: Cpu },
+  { id: 'terminal', label: 'Developer Terminal', component: Terminal },
+  { id: 'cloud', label: 'Cloud Network', component: Cloud },
+  { id: 'flame', label: 'Flame Trending', component: Flame },
+  { id: 'lightbulb', label: 'Idea Lightbulb', component: Lightbulb },
+  { id: 'wrench', label: 'Setup Wrench', component: Wrench },
+  { id: 'trophy', label: 'Achievement Trophy', component: Trophy },
+  { id: 'target', label: 'Focus Target', component: Target },
+  { id: 'compass', label: 'Compass Nav', component: Compass },
+  { id: 'activity', label: 'Activity Graph', component: Activity },
+  { id: 'pentool', label: 'UI/UX Pen Tool', component: PenTool },
+  { id: 'sparkles', label: 'Sparkles Premium', component: Sparkles },
+  { id: 'server', label: 'Data Server', component: Server },
+  { id: 'coffee', label: 'Coffee Loop', component: Coffee },
+  { id: 'map', label: 'Map / Geography', component: Map },
+  { id: 'checkcircle', label: 'Check Circle', component: CheckCircle2 },
+  { id: 'folder', label: 'Folder Storage', component: Folder },
+  { id: 'graduationcap', label: 'Graduation Cap', component: GraduationCap },
+  { id: 'briefcase', label: 'Job Briefcase', component: Briefcase },
+];
+
+const AVAILABLE_COLORS = [
+  { id: 'orange', label: 'Pastel Orange', bg: 'bg-orange-500', text: 'text-orange-500' },
+  { id: 'blue', label: 'Pastel Blue', bg: 'bg-blue-500', text: 'text-blue-500' },
+  { id: 'purple', label: 'Pastel Purple', bg: 'bg-purple-500', text: 'text-purple-500' },
+  { id: 'amber', label: 'Pastel Amber', bg: 'bg-amber-500', text: 'text-amber-500' },
+  { id: 'teal', label: 'Pastel Teal', bg: 'bg-teal-500', text: 'text-teal-500' },
+  { id: 'rose', label: 'Pastel Rose', bg: 'bg-rose-500', text: 'text-rose-500' },
+  { id: 'sky', label: 'Pastel Sky', bg: 'bg-sky-500', text: 'text-sky-500' },
+  { id: 'emerald', label: 'Pastel Emerald', bg: 'bg-emerald-500', text: 'text-emerald-500' },
+  { id: 'indigo', label: 'Pastel Indigo', bg: 'bg-indigo-500', text: 'text-indigo-500' },
+  { id: 'violet', label: 'Pastel Violet', bg: 'bg-violet-500', text: 'text-violet-500' },
+  { id: 'fuchsia', label: 'Pastel Fuchsia', bg: 'bg-fuchsia-500', text: 'text-fuchsia-500' },
+  { id: 'pink', label: 'Pastel Pink', bg: 'bg-pink-500', text: 'text-pink-500' },
+  { id: 'cyan', label: 'Pastel Cyan', bg: 'bg-cyan-500', text: 'text-cyan-500' },
+  { id: 'lime', label: 'Pastel Lime', bg: 'bg-lime-500', text: 'text-lime-500' },
+  { id: 'slate', label: 'Pastel Slate', bg: 'bg-slate-500', text: 'text-slate-500' },
+  { id: 'yellow', label: 'Pastel Yellow', bg: 'bg-yellow-500', text: 'text-yellow-500' },
+  { id: 'red', label: 'Pastel Red', bg: 'bg-red-500', text: 'text-red-500' },
+];
+
+const STANDARD_CATEGORIES = [
+  'Web Development',
+  'App Development',
+  'Frontend Development',
+  'Backend Development',
+  'Full-Stack Development',
+  'UI/UX Design',
+  'AI & Machine Learning',
+  'DevOps & Cloud',
+  'Data Science & Analytics',
+  'Blockchain & Web3',
+  'Cybersecurity',
+  'Mobile Development',
+  'Game Development',
+  'SaaS Product',
+  'Mentorship',
+  'Technical Blog',
+  'Open Source',
+  'Research & Development'
+];
+
 const compressAndResizeImage = (file: File, maxDim: number = 800, quality: number = 0.7): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -95,6 +177,161 @@ const compressAndResizeImage = (file: File, maxDim: number = 800, quality: numbe
     };
     reader.readAsDataURL(file);
   });
+};
+
+interface IconSelectorProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const IconSelector: React.FC<IconSelectorProps> = ({ value, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  // Find current icon
+  const valLower = (value || '').toLowerCase();
+  const currentIcon = AVAILABLE_ICONS.find(i => i.id.toLowerCase() === valLower || (valLower === '' && i.id === 'none')) || AVAILABLE_ICONS[0];
+  const IconComponent = currentIcon ? currentIcon.component : Code;
+
+  const filteredIcons = AVAILABLE_ICONS.filter(icon => 
+    icon.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    icon.id.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  return (
+    <div className="relative w-full">
+      <button
+        type="button"
+        onClick={() => {
+          setIsOpen(!isOpen);
+          setSearchQuery('');
+        }}
+        className="flex items-center justify-between w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-100 cursor-pointer focus:outline-none focus:ring-1 focus:ring-orange-500 hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
+      >
+        <span className="flex items-center gap-2 overflow-hidden">
+          {currentIcon && currentIcon.id !== 'none' && (
+            <IconComponent className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+          )}
+          <span className="font-sans font-medium truncate">{currentIcon ? currentIcon.label : 'Select Icon'}</span>
+        </span>
+        <svg className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <>
+          {/* Backdrop to close */}
+          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+          
+          <div className="absolute left-0 mt-1 w-full bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl z-50 p-2 animate-in fade-in slide-in-from-top-1 duration-150">
+            {/* Search Input */}
+            <div className="relative mb-2">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search icon..."
+                className="w-full pl-7 pr-3 py-1 rounded-md border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-[11px] text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-1 focus:ring-orange-500"
+              />
+              <Search className="absolute left-2.5 top-1.5 w-3 h-3 text-slate-400" />
+            </div>
+
+            <div className="max-h-52 overflow-y-auto flex flex-col gap-0.5 pr-0.5">
+              {filteredIcons.map((icon) => {
+                const Comp = icon.component;
+                const isSelected = icon.id.toLowerCase() === valLower || (valLower === '' && icon.id === 'none');
+                return (
+                  <button
+                    key={icon.id || 'none'}
+                    type="button"
+                    onClick={() => {
+                      onChange(icon.id === 'none' ? '' : icon.id);
+                      setIsOpen(false);
+                    }}
+                    className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-left text-[11px] font-sans transition-colors cursor-pointer ${
+                      isSelected 
+                        ? 'bg-orange-50 dark:bg-orange-950/20 text-orange-600 dark:text-orange-400 font-semibold' 
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/50'
+                    }`}
+                  >
+                    {icon.id !== 'none' && (
+                      <Comp className={`w-3.5 h-3.5 shrink-0 ${isSelected ? 'text-orange-500' : 'text-slate-400'}`} />
+                    )}
+                    <span className="truncate">{icon.label}</span>
+                  </button>
+                );
+              })}
+              {filteredIcons.length === 0 && (
+                <div className="text-center text-[10px] py-4 text-slate-400">No icons found</div>
+              )}
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+interface ColorSelectorProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+const ColorSelector: React.FC<ColorSelectorProps> = ({ value, onChange }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  
+  // Find current color
+  const currentColor = AVAILABLE_COLORS.find(c => c.id === (value || 'orange')) || AVAILABLE_COLORS[0];
+
+  return (
+    <div className="relative w-full">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-between w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-100 cursor-pointer focus:outline-none focus:ring-1 focus:ring-orange-500 hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
+      >
+        <span className="flex items-center gap-2 overflow-hidden">
+          <span className={`w-3 h-3 rounded-full shrink-0 ${currentColor.bg}`} />
+          <span className="font-sans font-medium truncate">{currentColor.label}</span>
+        </span>
+        <svg className={`w-3.5 h-3.5 text-slate-400 shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <>
+          {/* Backdrop to close */}
+          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+          
+          <div className="absolute left-0 mt-1 w-full max-h-52 overflow-y-auto bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl shadow-xl z-50 p-1.5 flex flex-col gap-0.5 animate-in fade-in slide-in-from-top-1 duration-150">
+            {AVAILABLE_COLORS.map((color) => {
+              const isSelected = color.id === (value || 'orange');
+              return (
+                <button
+                  key={color.id}
+                  type="button"
+                  onClick={() => {
+                    onChange(color.id);
+                    setIsOpen(false);
+                  }}
+                  className={`flex items-center gap-2.5 w-full px-2.5 py-2 rounded-lg text-left text-[11px] font-sans transition-colors cursor-pointer ${
+                    isSelected 
+                      ? 'bg-orange-50 dark:bg-orange-950/20 text-orange-600 dark:text-orange-400 font-semibold' 
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-900/50'
+                  }`}
+                >
+                  <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${color.bg}`} />
+                  <span className="truncate">{color.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </>
+      )}
+    </div>
+  );
 };
 
 interface SkillsTextInputProps {
@@ -1542,44 +1779,18 @@ export default function AdminTab() {
                                             <div className="grid grid-cols-2 gap-3">
                                               <div className="flex flex-col space-y-1 font-sans">
                                                 <label className="text-[9px] font-mono text-slate-400 uppercase font-bold">Icon Picker:</label>
-                                                <select
-                                                  value={card.iconName}
-                                                  onChange={(e) => handleUpdateCardField(sIdx, cIdx, 'iconName', e.target.value)}
-                                                  className="pl-2.5 pr-8 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-100 cursor-pointer w-full focus:outline-none focus:ring-1 focus:ring-orange-500"
-                                                >
-                                                  <option value="code">Code Block</option>
-                                                  <option value="smartphone">Smartphone</option>
-                                                  <option value="palette">Paint Palette</option>
-                                                  <option value="users">People Box</option>
-                                                  <option value="layers">Layers Stack</option>
-                                                  <option value="zap">Zap Volt</option>
-                                                  <option value="layout">Page Layout</option>
-                                                  <option value="monitor">Desktop Monitor</option>
-                                                  <option value="globe">Web Globe</option>
-                                                  <option value="database">Database Server</option>
-                                                  <option value="shield">Secure Shield</option>
-                                                  <option value="award">Award Medal</option>
-                                                  <option value="star">Rating Star</option>
-                                                  <option value="heart">Health Heart</option>
-                                                </select>
+                                                <IconSelector
+                                                  value={card.iconName || ''}
+                                                  onChange={(val) => handleUpdateCardField(sIdx, cIdx, 'iconName', val)}
+                                                />
                                               </div>
 
                                               <div className="flex flex-col space-y-1 font-sans">
                                                 <label className="text-[9px] font-mono text-slate-400 uppercase font-bold">Theme Color:</label>
-                                                <select
+                                                <ColorSelector
                                                   value={card.colorTheme || 'orange'}
-                                                  onChange={(e) => handleUpdateCardField(sIdx, cIdx, 'colorTheme', e.target.value)}
-                                                  className="pl-2.5 pr-8 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs text-slate-800 dark:text-slate-100 cursor-pointer w-full focus:outline-none focus:ring-1 focus:ring-orange-500"
-                                                >
-                                                  <option value="orange">Orange Pastel</option>
-                                                  <option value="blue">Blue Pastel</option>
-                                                  <option value="purple">Purple Pastel</option>
-                                                  <option value="amber">Amber Pastel</option>
-                                                  <option value="teal">Teal Pastel</option>
-                                                  <option value="rose">Rose Pastel</option>
-                                                  <option value="sky">Sky Pastel</option>
-                                                  <option value="emerald">Emerald Pastel</option>
-                                                </select>
+                                                  onChange={(val) => handleUpdateCardField(sIdx, cIdx, 'colorTheme', val)}
+                                                />
                                               </div>
                                             </div>
 
@@ -1684,20 +1895,10 @@ export default function AdminTab() {
                                   <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                                     <div className="flex flex-col space-y-1 md:col-span-3">
                                       <label className="text-[10px] font-mono font-bold uppercase text-slate-400">Section Icon:</label>
-                                      <select
+                                      <IconSelector
                                         value={section.iconName || ''}
-                                        onChange={(e) => handleUpdateResumeSectionField(sIdx, 'iconName', e.target.value)}
-                                        className="pl-2 pr-8 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-xs text-slate-800 dark:text-slate-100 font-sans cursor-pointer"
-                                      >
-                                        <option value="">No Icon / None</option>
-                                        <option value="GraduationCap">Graduation Cap</option>
-                                        <option value="Briefcase">Professional Suitcase</option>
-                                        <option value="Code">Source Code</option>
-                                        <option value="Layers">Layers Stack</option>
-                                        <option value="Zap">Zap Speed</option>
-                                        <option value="Layout">Interactive Card</option>
-                                        <option value="Award">Winner Badge</option>
-                                      </select>
+                                        onChange={(val) => handleUpdateResumeSectionField(sIdx, 'iconName', val)}
+                                      />
                                     </div>
 
                                     <div className="flex flex-col space-y-1 md:col-span-6">
@@ -1860,44 +2061,18 @@ export default function AdminTab() {
                                                 <>
                                                   <div className="flex flex-col space-y-1 font-sans">
                                                     <label className="text-[9px] font-mono text-slate-400 uppercase font-bold">Icon Picker:</label>
-                                                    <select
-                                                      value={card.iconName}
-                                                      onChange={(e) => handleUpdateCardFieldInResumeSection(sIdx, cIdx, 'iconName', e.target.value)}
-                                                      className="pl-2 pr-8 py-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-xs text-slate-800 dark:text-slate-100 cursor-pointer"
-                                                    >
-                                                      <option value="code">Code Block</option>
-                                                      <option value="smartphone">Smartphone</option>
-                                                      <option value="palette">Paint Palette</option>
-                                                      <option value="users">People Box</option>
-                                                      <option value="layers">Layers Stack</option>
-                                                      <option value="zap">Zap Volt</option>
-                                                      <option value="layout">Page Layout</option>
-                                                      <option value="monitor">Desktop Monitor</option>
-                                                      <option value="globe">Web Globe</option>
-                                                      <option value="database">Database Server</option>
-                                                      <option value="shield">Secure Shield</option>
-                                                      <option value="award">Award Medal</option>
-                                                      <option value="star">Rating Star</option>
-                                                      <option value="heart">Health Heart</option>
-                                                    </select>
+                                                    <IconSelector
+                                                      value={card.iconName || ''}
+                                                      onChange={(val) => handleUpdateCardFieldInResumeSection(sIdx, cIdx, 'iconName', val)}
+                                                    />
                                                   </div>
 
                                                   <div className="flex flex-col space-y-1 font-sans">
                                                     <label className="text-[9px] font-mono text-slate-400 uppercase font-bold">Theme Color:</label>
-                                                    <select
+                                                    <ColorSelector
                                                       value={card.colorTheme || 'orange'}
-                                                      onChange={(e) => handleUpdateCardFieldInResumeSection(sIdx, cIdx, 'colorTheme', e.target.value)}
-                                                      className="pl-2 pr-8 py-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-xs text-slate-800 dark:text-slate-100 cursor-pointer"
-                                                    >
-                                                      <option value="orange">Orange Pastel</option>
-                                                      <option value="blue">Blue Pastel</option>
-                                                      <option value="purple">Purple Pastel</option>
-                                                      <option value="amber">Amber Pastel</option>
-                                                      <option value="teal">Teal Pastel</option>
-                                                      <option value="rose">Rose Pastel</option>
-                                                      <option value="sky">Sky Pastel</option>
-                                                      <option value="emerald">Emerald Pastel</option>
-                                                    </select>
+                                                      onChange={(val) => handleUpdateCardFieldInResumeSection(sIdx, cIdx, 'colorTheme', val)}
+                                                    />
                                                   </div>
                                                 </>
                                               )}
@@ -2174,20 +2349,38 @@ export default function AdminTab() {
                                       <div className="flex flex-col space-y-1">
                                         <label className="text-[9px] font-bold text-slate-400 uppercase font-mono">Category Tag:</label>
                                         <select
-                                          value={project.category}
+                                          value={STANDARD_CATEGORIES.includes(project.category) ? project.category : 'Custom'}
                                           onChange={(e) => {
+                                            const val = e.target.value;
                                             const projects = [...profileForm.projects];
-                                            projects[originalIndex].category = e.target.value as any;
+                                            if (val === 'Custom') {
+                                              projects[originalIndex].category = 'My Custom Category';
+                                            } else {
+                                              projects[originalIndex].category = val;
+                                            }
                                             setProfileForm({ ...profileForm, projects });
                                           }}
                                           className="pl-2.5 pr-8 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-transparent text-xs text-slate-800 dark:text-slate-150 cursor-pointer focus:border-orange-400 outline-none w-full"
                                         >
-                                          <option value="App Development">App Development</option>
-                                          <option value="Web Development">Web Development</option>
-                                          <option value="Design">UI/UX Design</option>
-                                          <option value="Mentorship">Mentorship</option>
-                                          <option value="Blog">Technical Blog</option>
+                                          {STANDARD_CATEGORIES.map((cat) => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                          ))}
+                                          <option value="Custom">Custom Category...</option>
                                         </select>
+                                        
+                                        {!STANDARD_CATEGORIES.includes(project.category) && (
+                                          <input
+                                            type="text"
+                                            value={project.category}
+                                            onChange={(e) => {
+                                              const projects = [...profileForm.projects];
+                                              projects[originalIndex].category = e.target.value;
+                                              setProfileForm({ ...profileForm, projects });
+                                            }}
+                                            className="mt-1 px-2.5 py-1.5 rounded-lg border border-orange-200 dark:border-orange-950 bg-orange-50/10 dark:bg-orange-950/5 text-xs text-slate-850 dark:text-slate-100 w-full focus:border-orange-400 outline-none font-sans"
+                                            placeholder="Enter custom category tag..."
+                                          />
+                                        )}
                                       </div>
 
                                       <div className="flex flex-col space-y-1">

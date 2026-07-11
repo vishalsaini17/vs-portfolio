@@ -17,7 +17,27 @@ import {
   Shield,
   Award,
   Star,
-  Heart
+  Heart,
+  BookOpen,
+  Cpu,
+  Terminal,
+  Cloud,
+  Flame,
+  Lightbulb,
+  Wrench,
+  Trophy,
+  Target,
+  Compass,
+  Activity,
+  PenTool,
+  Sparkles,
+  Server,
+  Coffee,
+  Map,
+  CheckCircle2,
+  Folder,
+  GraduationCap,
+  Briefcase
 } from 'lucide-react';
 import { useProfile } from '../profileContext';
 import { markdownToHtml } from './MarkdownEditor';
@@ -28,7 +48,7 @@ export default function HomeTab() {
   // Service icon resolver based on string
   const getServiceIcon = (iconName: string, theme: string) => {
     const iconClass = `w-6 h-6 stroke-[2.2]`;
-    switch (iconName) {
+    switch (iconName.toLowerCase()) {
       case 'code':
         return <Code className={`${iconClass} text-orange-600 dark:text-orange-400`} />;
       case 'smartphone':
@@ -57,6 +77,50 @@ export default function HomeTab() {
         return <Star className={`${iconClass} text-amber-600 dark:text-amber-400`} />;
       case 'heart':
         return <Heart className={`${iconClass} text-red-600 dark:text-red-400`} />;
+      case 'bookopen':
+      case 'book-open':
+        return <BookOpen className={`${iconClass} text-indigo-600 dark:text-indigo-400`} />;
+      case 'cpu':
+        return <Cpu className={`${iconClass} text-rose-600 dark:text-rose-400`} />;
+      case 'terminal':
+        return <Terminal className={`${iconClass} text-emerald-600 dark:text-emerald-400`} />;
+      case 'cloud':
+        return <Cloud className={`${iconClass} text-sky-600 dark:text-sky-400`} />;
+      case 'flame':
+        return <Flame className={`${iconClass} text-red-600 dark:text-red-400`} />;
+      case 'lightbulb':
+        return <Lightbulb className={`${iconClass} text-yellow-600 dark:text-yellow-400`} />;
+      case 'wrench':
+        return <Wrench className={`${iconClass} text-slate-600 dark:text-slate-400`} />;
+      case 'trophy':
+        return <Trophy className={`${iconClass} text-amber-600 dark:text-amber-400`} />;
+      case 'target':
+        return <Target className={`${iconClass} text-rose-600 dark:text-rose-400`} />;
+      case 'compass':
+        return <Compass className={`${iconClass} text-blue-600 dark:text-blue-400`} />;
+      case 'activity':
+        return <Activity className={`${iconClass} text-emerald-600 dark:text-emerald-400`} />;
+      case 'pentool':
+      case 'pen-tool':
+        return <PenTool className={`${iconClass} text-pink-600 dark:text-pink-400`} />;
+      case 'sparkles':
+        return <Sparkles className={`${iconClass} text-violet-600 dark:text-violet-400`} />;
+      case 'server':
+        return <Server className={`${iconClass} text-blue-600 dark:text-blue-400`} />;
+      case 'coffee':
+        return <Coffee className={`${iconClass} text-amber-700 dark:text-amber-500`} />;
+      case 'map':
+        return <Map className={`${iconClass} text-teal-600 dark:text-teal-400`} />;
+      case 'checkcircle':
+      case 'check-circle':
+        return <CheckCircle2 className={`${iconClass} text-emerald-600 dark:text-emerald-400`} />;
+      case 'folder':
+        return <Folder className={`${iconClass} text-amber-600 dark:text-amber-400`} />;
+      case 'graduationcap':
+      case 'graduation-cap':
+        return <GraduationCap className={`${iconClass} text-indigo-600 dark:text-indigo-400`} />;
+      case 'briefcase':
+        return <Briefcase className={`${iconClass} text-amber-800 dark:text-amber-600`} />;
       default:
         return <Code className={iconClass} />;
     }
@@ -103,6 +167,51 @@ export default function HomeTab() {
       bg: 'bg-[#ecfdf5] dark:bg-emerald-950/10',
       border: 'border-emerald-100/75 dark:border-emerald-900/20',
       iconBg: 'bg-emerald-100 dark:bg-emerald-900/30',
+    },
+    indigo: {
+      bg: 'bg-[#f0f2fe] dark:bg-indigo-950/10',
+      border: 'border-indigo-100/75 dark:border-indigo-900/20',
+      iconBg: 'bg-indigo-100 dark:bg-indigo-900/30',
+    },
+    violet: {
+      bg: 'bg-[#f5f3ff] dark:bg-violet-950/10',
+      border: 'border-violet-100/75 dark:border-violet-900/20',
+      iconBg: 'bg-violet-100 dark:bg-violet-900/30',
+    },
+    fuchsia: {
+      bg: 'bg-[#fdf4ff] dark:bg-fuchsia-950/10',
+      border: 'border-fuchsia-100/75 dark:border-fuchsia-900/20',
+      iconBg: 'bg-fuchsia-100 dark:bg-fuchsia-900/30',
+    },
+    pink: {
+      bg: 'bg-[#fdf2f8] dark:bg-pink-950/10',
+      border: 'border-pink-100/75 dark:border-pink-900/20',
+      iconBg: 'bg-pink-100 dark:bg-pink-900/30',
+    },
+    cyan: {
+      bg: 'bg-[#ecfeff] dark:bg-cyan-950/10',
+      border: 'border-cyan-100/75 dark:border-cyan-900/20',
+      iconBg: 'bg-cyan-100 dark:bg-cyan-900/30',
+    },
+    lime: {
+      bg: 'bg-[#f7fee7] dark:bg-lime-950/10',
+      border: 'border-lime-100/75 dark:border-lime-900/20',
+      iconBg: 'bg-lime-100 dark:bg-lime-900/30',
+    },
+    slate: {
+      bg: 'bg-[#f8fafc] dark:bg-slate-950/10',
+      border: 'border-slate-200/75 dark:border-slate-800/20',
+      iconBg: 'bg-slate-200 dark:bg-slate-800/30',
+    },
+    yellow: {
+      bg: 'bg-[#fefce8] dark:bg-yellow-950/10',
+      border: 'border-yellow-100/75 dark:border-yellow-900/20',
+      iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
+    },
+    red: {
+      bg: 'bg-[#fef2f2] dark:bg-red-950/10',
+      border: 'border-red-100/75 dark:border-red-900/20',
+      iconBg: 'bg-red-100 dark:bg-red-900/30',
     }
   };
 
