@@ -14,6 +14,7 @@ interface HeaderProps {
   darkMode: boolean;
   setDarkMode: (dark: boolean) => void;
   isAdminLoggedIn?: boolean;
+  privacyMode?: boolean;
 }
 
 export default function Header({
@@ -22,6 +23,7 @@ export default function Header({
   darkMode,
   setDarkMode,
   isAdminLoggedIn,
+  privacyMode = false,
 }: HeaderProps) {
   const { profile } = useProfile();
   const nameParts = profile.profileName.split(' ');
@@ -32,7 +34,7 @@ export default function Header({
     { id: 'home', label: 'Home', icon: Home },
     { id: 'resume', label: 'Resume', icon: FileText },
     { id: 'work', label: 'Work', icon: Briefcase },
-    { id: 'contact', label: 'Contact', icon: Mail },
+    ...(!privacyMode ? [{ id: 'contact' as const, label: 'Contact', icon: Mail }] : []),
     ...(profile.blogEnabled ? [{ id: 'blog' as const, label: 'Blog', icon: BookOpen }] : []),
     ...(isAdminLoggedIn ? [{ id: 'admin' as const, label: 'Admin', icon: Shield }] : []),
   ];

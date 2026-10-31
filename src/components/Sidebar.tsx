@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 import { db, handleFirestoreError, OperationType } from '../firebase';
 
-export default function Sidebar() {
+export default function Sidebar({ privacyMode = false }: { privacyMode?: boolean }) {
   const { profile, loading } = useProfile();
   const { profileName, profileTitle, profileAvatar, socialLinks, contactInfo } = profile;
   const [downloading, setDownloading] = useState(false);
@@ -94,9 +94,7 @@ export default function Sidebar() {
 ${profileName.toUpperCase()}
 ${profileTitle} Portfolio Resume
 =========================================
-Email: ${contactInfo.email}
-Phone: ${contactInfo.phone.join(' / ')}
-Location: ${contactInfo.location}
+${privacyMode ? '' : `Email: ${contactInfo.email}\nPhone: ${contactInfo.phone.join(' / ')}\nLocation: ${contactInfo.location}\n`}
 
 -----------------------------------------
 PROFESSIONAL SUMMARY
@@ -174,7 +172,9 @@ Passionated and versatile Developer.
   }
 
   // Filter out social links that do not have data
-  const activeSocialLinks = socialLinks.filter((link) => link.url && link.url.trim() !== '');
+  const activeSocialLinks = socialLinks.filter((link) =>
+    link.url && link.url.trim() !== '' && (!privacyMode || link.platform !== 'linkedin')
+  );
 
   return (
     <aside className="w-full lg:w-96 lg:sticky lg:top-12 shrink-0 flex flex-col items-center">
@@ -231,7 +231,7 @@ Passionated and versatile Developer.
         )}
 
         {/* Gray contact details box - dynamic blocks to remove fields or dividers when no data */}
-        {((contactInfo.phone && contactInfo.phone[0]) || contactInfo.email || contactInfo.location) && (
+        {!privacyMode && ((contactInfo.phone && contactInfo.phone[0]) || contactInfo.email || contactInfo.location) && (
           <div className="w-full bg-[#f3f6f9] dark:bg-slate-800/50 rounded-2xl p-5 mt-8 space-y-4 font-sans text-left">
             {(() => {
               const rows: React.ReactNode[] = [];

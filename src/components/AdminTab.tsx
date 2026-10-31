@@ -15,7 +15,8 @@ import {
   Server, Coffee, Map, Folder, GraduationCap, Briefcase
 } from 'lucide-react';
 import { 
-  auth, db, GoogleAuthProvider, signInWithPopup, signOut, handleFirestoreError, OperationType 
+  auth, db, GoogleAuthProvider, signInWithLocalAdmin, signInWithPopup, signOut,
+  handleFirestoreError, isLocalAuthEnabled, OperationType
 } from '../firebase';
 import { 
   onAuthStateChanged, User as FirebaseUser 
@@ -42,6 +43,15 @@ interface ActiveResume {
 }
 
 const AUTHORIZED_ADMIN_EMAIL = 'vishalsaini154@gmail.com';
+const LOCAL_ADMIN_SESSION_KEY = 'portfolio-local-admin-session';
+
+const localDevelopmentUser = {
+  uid: 'local-development-admin',
+  email: AUTHORIZED_ADMIN_EMAIL,
+  displayName: 'Local Development Admin',
+  photoURL: null,
+  emailVerified: true,
+} as unknown as FirebaseUser;
 
 const maskEmail = (email: string | null | undefined): string => {
   if (!email) return '';
@@ -376,6 +386,7 @@ export default function AdminTab() {
   const navigate = useNavigate();
   const [user, setUser] = useState<FirebaseUser | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loginError, setLoginError] = useState('');
   
   // Custom Admin sub-tabs
   const [adminActiveTab, setAdminActiveTab] = useState<'profile' | 'inbox' | 'resume' | 'blog'>('inbox');
@@ -413,7 +424,13 @@ export default function AdminTab() {
   // Sync Auth State
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        setUser(currentUser);
+      } else if (isLocalAuthEnabled && localStorage.getItem(LOCAL_ADMIN_SESSION_KEY) === 'true') {
+        setUser(localDevelopmentUser);
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
     return () => unsubscribe();
@@ -536,18 +553,29 @@ export default function AdminTab() {
     }
   };
 
-  // Google Authentication Trigger
+  // Authentication trigger: browser-local session in development, Google elsewhere.
   const handleAdminLogin = async () => {
+    setLoginError('');
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      if (isLocalAuthEnabled) {
+        signInWithLocalAdmin();
+        setUser(localDevelopmentUser);
+      } else {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+      }
     } catch (err) {
       console.error('Login error:', err);
+      const message = err instanceof Error ? err.message : String(err);
+      setLoginError(`Sign-in failed: ${message}`);
     }
   };
 
   const handleAdminLogout = async () => {
     try {
+      if (isLocalAuthEnabled) {
+        localStorage.removeItem(LOCAL_ADMIN_SESSION_KEY);
+      }
       await signOut(auth);
       navigate('/');
     } catch (err) {
@@ -1121,8 +1149,15 @@ export default function AdminTab() {
               className="w-full flex items-center justify-center gap-2.5 py-3 px-5 rounded-2xl font-semibold font-sans text-sm text-white bg-gradient-to-r from-orange-500 to-red-600 shadow-sm hover:from-orange-600 hover:to-red-700 select-none cursor-pointer transition-all active:scale-[0.98]"
             >
               <LogIn className="w-4 h-4" />
-              Sign In with Google
+              {isLocalAuthEnabled ? 'Sign In Locally' : 'Sign In with Google'}
             </button>
+
+            {loginError && (
+              <div className="w-full flex items-start gap-2 p-3.5 bg-red-50 dark:bg-red-950/15 border border-red-200/50 dark:border-red-900/20 rounded-xl text-red-800 dark:text-red-400 text-xs text-left">
+                <AlertTriangle className="w-4 h-4 shrink-0" />
+                <span>{loginError}</span>
+              </div>
+            )}
           </motion.div>
         ) : (
           <motion.div

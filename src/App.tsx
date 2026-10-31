@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState, useEffect } from 'react';
+import { lazy, Suspense, useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { TabType } from './types';
@@ -19,12 +19,17 @@ import ResumeTab from './components/ResumeTab';
 import WorkTab from './components/WorkTab';
 import ContactTab from './components/ContactTab';
 import BlogTab from './components/BlogTab';
-import AdminTab from './components/AdminTab';
+import { clearPrivacyCookie, getPrivacyState } from './privacyMode';
+
+const AdminTab = lazy(() => import('./components/AdminTab'));
 
 export default function App() {
   const { profile, loading, error, saveProfile } = useProfile();
   const location = useLocation();
   const navigate = useNavigate();
+  const [initialPrivacyState] = useState(() => getPrivacyState(location.search));
+  const [privacyMode, setPrivacyMode] = useState(initialPrivacyState.enabled);
+  const [privacyExpiresAt, setPrivacyExpiresAt] = useState<number | null>(initialPrivacyState.expiresAt);
 
   // Helper to match paths to TabType
   const getActiveTab = (pathname: string): TabType => {
@@ -48,12 +53,28 @@ export default function App() {
 
   const activeTab = getActiveTab(location.pathname);
 
+  useEffect(() => {
+    const nextState = getPrivacyState(location.search);
+    setPrivacyMode(nextState.enabled);
+    setPrivacyExpiresAt(nextState.expiresAt);
+  }, [location.search]);
+
+  useEffect(() => {
+    if (!privacyMode || !privacyExpiresAt) return;
+    const timeout = window.setTimeout(() => {
+      clearPrivacyCookie();
+      setPrivacyMode(false);
+      setPrivacyExpiresAt(null);
+    }, Math.max(0, privacyExpiresAt - Date.now()));
+    return () => window.clearTimeout(timeout);
+  }, [privacyMode, privacyExpiresAt]);
+
   // Redirect if Blog is disabled but activeTab is 'blog'
   useEffect(() => {
     if (activeTab === 'blog' && !profile.blogEnabled) {
       setActiveTab('home');
     }
-  }, [activeTab, profile.blogEnabled]);
+  }, [activeTab, navigate, privacyMode, profile.blogEnabled]);
 
   const setActiveTab = (tab: TabType) => {
     const path = tab === 'home' ? '/' : `/${tab}`;
@@ -257,13 +278,14 @@ export default function App() {
         darkMode={darkMode}
         setDarkMode={setDarkMode}
         isAdminLoggedIn={isAdminLoggedIn}
+        privacyMode={privacyMode}
       />
 
       {/* Main Core Layout Grid */}
       <main className="w-full max-w-7xl mx-auto px-4 md:px-6 flex flex-col lg:flex-row gap-8 items-start mt-6 md:mt-8 flex-1">
         
         {/* Left Profile Sidebar */}
-        <Sidebar />
+        <Sidebar privacyMode={privacyMode} />
 
         {/* Right Active Workspace Block */}
         <section className="w-full flex-1 min-w-0">
@@ -279,7 +301,9 @@ export default function App() {
                 transition={{ duration: 0.25, ease: 'easeOut' }}
                 className="w-full"
               >
-                {renderTabContent()}
+                <Suspense fallback={<div className="py-20 text-center text-sm text-slate-500">Loading admin panel...</div>}>
+                  {renderTabContent()}
+                </Suspense>
               </motion.div>
             </AnimatePresence>
 

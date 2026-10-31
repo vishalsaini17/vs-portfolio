@@ -5,9 +5,26 @@
  */
 
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth';
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 const env = import.meta.env;
+
+/**
+ * Local auth is deliberately gated by all three checks. In particular, DEV is
+ * false in a production Vite build, so a production deployment cannot enable
+ * this path by accidentally exposing a VITE_* variable.
+ */
+export const isLocalAuthEnabled =
+  env.DEV &&
+  env.MODE === 'development' &&
+  env.APP_MODE === 'development' &&
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 
 const firebaseConfig = {
   apiKey: env.VITE_FIREBASE_API_KEY || "",
@@ -42,6 +59,18 @@ export const db = getFirestore(
 
 export const auth = getAuth(app);
 export { GoogleAuthProvider, signInWithPopup, signOut };
+
+/**
+ * Starts the localhost-only development session. This intentionally does not
+ * touch Firebase Auth or Firestore; production authentication is unchanged.
+ */
+export function signInWithLocalAdmin() {
+  if (!isLocalAuthEnabled) {
+    throw new Error('Local authentication is only available on the localhost development server.');
+  }
+
+  localStorage.setItem('portfolio-local-admin-session', 'true');
+}
 
 // --- Error Handling Specification Compliance ---
 export enum OperationType {

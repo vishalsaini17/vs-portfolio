@@ -74,6 +74,19 @@ To integrate external AI services or run production-ready servers, add a `.env` 
 1. **`GEMINI_API_KEY`**: (Optional) Add your Google Gemini developer key if utilizing AI-assisted text generation or summarization.
 2. **`APP_URL`**: (Optional) Provide your app's hosted domain (e.g. `http://localhost:3000` or a deployed custom URL) for secure redirects and OAuth mappings.
 
+### Local admin development
+
+Google sign-in remains the only authentication path in production. For localhost development, the app uses a browser-local development session without changing Firebase Auth, Firestore, or database selection.
+
+1. Copy `APP_MODE=development` from `.env.example` into `.env.local`.
+2. Start the app with `npm run dev` and open `http://localhost:3000/admin`.
+
+The local session is only a development UI session and is never enabled in production. Do not set `APP_MODE=development` in a deployed environment: the code additionally requires Vite development mode and a localhost hostname, and production builds always retain Google sign-in.
+
+### Privacy mode
+
+Open the site with `?p`, for example `http://localhost:3000/?p`, to hide phone numbers, email addresses, location details, and LinkedIn links from the sidebar and remove the Contact link from the navbar. Privacy mode is stored in a site cookie for 12 hours, remains active after the query parameter is removed, and automatically expires without changing the stored profile data. The `/contact` URL remains directly accessible when entered manually.
+
 ### Running Local Development Server
 
 Once your config file `/firebase-applet-config.json` is set up with valid credentials:
