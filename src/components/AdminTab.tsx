@@ -577,7 +577,11 @@ export default function AdminTab() {
         localStorage.removeItem(LOCAL_ADMIN_SESSION_KEY);
       }
       await signOut(auth);
-      navigate('/');
+      navigate({
+        pathname: '/',
+        search: window.location.search,
+        hash: window.location.hash,
+      });
     } catch (err) {
       console.error('Logout failed:', err);
     }

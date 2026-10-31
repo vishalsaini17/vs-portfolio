@@ -78,7 +78,11 @@ export default function App() {
 
   const setActiveTab = (tab: TabType) => {
     const path = tab === 'home' ? '/' : `/${tab}`;
-    navigate(path);
+    navigate({
+      pathname: path,
+      search: location.search,
+      hash: location.hash,
+    });
   };
 
   const [darkMode, setDarkMode] = useState<boolean>(false);

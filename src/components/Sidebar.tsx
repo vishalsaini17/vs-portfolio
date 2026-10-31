@@ -302,6 +302,7 @@ Passionated and versatile Developer.
           </div>
         )}
 
+        {!privacyMode && <>
         {/* Action Button: Download Resume */}
         <button
           id="btn-download-resume"
@@ -330,6 +331,7 @@ Passionated and versatile Developer.
             </>
           )}
         </button>
+        </>}
 
       </div>
     </aside>

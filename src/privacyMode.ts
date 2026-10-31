@@ -25,7 +25,13 @@ export function clearPrivacyCookie() {
 }
 
 export function getPrivacyState(search: string): PrivacyState {
-  if (new URLSearchParams(search).has('p')) {
+  const params = new URLSearchParams(search);
+  if (params.get('p') === 'f') {
+    clearPrivacyCookie();
+    return { enabled: false, expiresAt: null };
+  }
+
+  if (params.has('p')) {
     return { enabled: true, expiresAt: savePrivacyCookie() };
   }
 
